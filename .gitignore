@@ -1,0 +1,32 @@
+# 環境變數檔案
+.env
+
+# Docker 資料
+certbot/conf/
+certbot/www/
+
+# 匯出檔案
+exports/
+
+# Hugo 生成檔案
+hugo/public/
+hugo/resources/
+hugo/themes/
+
+# 日誌檔案
+*.log
+
+# 備份檔案
+*.backup
+*.bak
+
+# OS 系統檔案
+.DS_Store
+Thumbs.db
+
+# 編輯器檔案
+.vscode/
+.idea/
+*.swp
+*.swo
+*~

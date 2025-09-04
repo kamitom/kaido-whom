@@ -5,6 +5,7 @@
 ## 專案特色
 
 - 🚀 使用 Hugo 靜態網站生成器，快速且SEO友善
+- ⚡ 即時更新功能，新增文章自動發布，無需重建映像檔
 - 🔒 自動 SSL 憑證申請與續期 (Let's Encrypt)
 - 🐳 完全 Docker 化部署
 - 📦 版本化管理，可匯出部署到其他伺服器
@@ -15,7 +16,7 @@
 - **Hugo**: klakegg/hugo:ext-alpine
 - **Nginx**: nginx:alpine
 - **Certbot**: certbot/certbot
-- **主題**: PaperMod
+- **設計**: 自訂響應式佈局
 
 ## 快速開始
 
@@ -118,6 +119,15 @@ kaido-whom/
 ├── hugo/                 # Hugo 網站內容
 │   ├── config.yaml      # Hugo 配置
 │   ├── content/         # 網站內容
+│   │   ├── posts/       # 文章目錄
+│   │   ├── _index.md    # 首頁內容
+│   │   └── search.md    # 搜尋頁面
+│   ├── layouts/         # 自訂佈局模板
+│   │   ├── _default/    # 預設模板
+│   │   │   ├── baseof.html   # 基礎模板
+│   │   │   ├── list.html     # 列表頁模板
+│   │   │   └── single.html   # 單頁模板
+│   │   └── index.html   # 首頁模板
 │   └── static/          # 靜態檔案
 ├── nginx/               # Nginx 配置
 │   ├── nginx.conf       # 主配置檔
@@ -129,6 +139,7 @@ kaido-whom/
 │   ├── build.sh         # 建置腳本
 │   ├── deploy.sh        # 部署腳本
 │   ├── export.sh        # 匯出腳本
+│   ├── hugo-watch.sh    # Hugo 監控腳本
 │   └── update-version.sh # 版本更新腳本
 ├── docker-compose.yml   # Docker Compose 配置
 ├── Dockerfile.hugo      # 自訂 Dockerfile
@@ -152,19 +163,68 @@ categories: ["分類"]
 文章內容...
 ```
 
-建立文章後，重新建置：
+建立文章後，**不需要重建映像檔**！Hugo 會自動監控變更並即時更新網站。
+
+## 映像檔重建時機
+
+### ❌ 不需要重建映像檔的情況
+
+以下操作會**自動更新**，無需重建映像檔：
+
+- ✅ **新增文章** - 在 `hugo/content/posts/` 新增 `.md` 檔案
+- ✅ **修改文章** - 編輯現有的 `.md` 檔案內容
+- ✅ **刪除文章** - 移除 `.md` 檔案
+- ✅ **修改文章元資料** - 更改 front matter（標題、日期、標籤等）
+- ✅ **新增靜態檔案** - 在 `hugo/static/` 新增圖片等檔案
+
+### ⚠️ 需要重建映像檔的情況
+
+以下變更需要重建映像檔：
+
+#### 🔧 Hugo 配置變更
+```bash
+# 當修改這些檔案時需要重建
+hugo/config.yaml          # Hugo 基礎配置
+hugo/layouts/**/*.html     # 佈局模板檔案
+```
+
+#### 🐳 容器配置變更  
+```bash
+# 當修改這些檔案時需要重建
+docker-compose.yml         # 服務配置
+Dockerfile.hugo            # Hugo 建置配置
+nginx/nginx.conf           # Nginx 主配置
+nginx/conf.d/*.conf        # Nginx 虛擬主機配置
+```
+
+#### 📦 版本升級
+```bash
+# 當進行版本升級時需要重建
+VERSION                    # 版本號檔案
+.env                      # 環境變數中的 VERSION
+```
+
+### 🛠️ 如何重建映像檔
+
+當需要重建時，執行以下指令：
 
 **使用 Make 指令:**
 ```bash
-make build
-make up
+make build    # 重建映像檔
+make up       # 重新啟動服務
 ```
 
 **使用腳本:**
 ```bash
-./scripts/build.sh
-docker compose up -d
+./scripts/build.sh        # 重建映像檔
+docker compose up -d      # 重新啟動服務
 ```
+
+### 📝 快速判斷原則
+
+- **內容變更**（文章、圖片）→ ❌ 不需重建
+- **配置變更**（模板、設定）→ ⚠️ 需要重建
+- **版本升級** → ⚠️ 需要重建
 
 ## 版本管理
 
@@ -292,4 +352,27 @@ rm -rf certbot/conf
 
 ## 版本歷程
 
-- v1.0.0: 初始版本，包含基本 Hugo + Nginx + Certbot 架構
+### v1.0.0 (2025-09-04)
+**完整功能版本**
+
+**核心功能**：
+- ✅ Hugo + Nginx + Certbot 完整架構
+- ✅ 自動 SSL 憑證申請與續期
+- ✅ 即時文章更新功能（無需重建映像檔）
+- ✅ 自訂響應式佈局設計
+- ✅ Docker Compose 多服務部署
+
+**技術特色**：
+- 🚀 Hugo 監控模式，文章即時發布
+- 🔒 Let's Encrypt 自動憑證管理
+- 🎨 簡潔白色卡片風格設計
+- 📱 完全響應式佈局
+- 🔧 雙重操作方式（Make + 腳本）
+
+**已實現功能**：
+- 首頁文章列表展示
+- 文章分類和標籤系統
+- 搜尋功能頁面
+- HTTPS 安全連線
+- 版本化映像檔管理
+- 可移植部署套件匯出

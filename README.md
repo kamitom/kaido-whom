@@ -16,6 +16,7 @@
 - **Hugo**: klakegg/hugo:ext-alpine
 - **Nginx**: nginx:alpine
 - **Certbot**: certbot/certbot
+- **測試**: Playwright (E2E 測試)
 - **設計**: 自訂響應式佈局
 
 ## 快速開始
@@ -34,6 +35,12 @@ cp .env.example .env
 DOMAIN_NAME=your-domain.com
 EMAIL=your-email@example.com
 VERSION=1.0.0
+
+# Certbot 配置
+# STAGING 控制是否使用 Let's Encrypt 的 staging（測試）環境
+# - STAGING=true  : 使用 staging CA（測試憑證，不被瀏覽器信任）
+# - STAGING=false : 使用 production CA（正式憑證，瀏覽器信任）
+STAGING=false
 ```
 
 ### 2. 檢查系統需求
@@ -141,8 +148,12 @@ kaido-whom/
 │   ├── export.sh        # 匯出腳本
 │   ├── hugo-watch.sh    # Hugo 監控腳本
 │   └── update-version.sh # 版本更新腳本
+├── tests/               # Playwright E2E 測試
+│   └── hello.spec.js    # 基本網站測試
 ├── docker-compose.yml   # Docker Compose 配置
 ├── Dockerfile.hugo      # 自訂 Dockerfile
+├── package.json         # Node.js 依賴配置
+├── playwright.config.js # Playwright 測試配置
 ├── .env                 # 環境變數
 └── Makefile            # Make 指令
 ```
@@ -164,6 +175,57 @@ categories: ["分類"]
 ```
 
 建立文章後，**不需要重建映像檔**！Hugo 會自動監控變更並即時更新網站。
+
+## 測試
+
+本專案使用 Playwright 進行端對端（E2E）測試，確保網站功能正常運作。
+
+### 執行測試
+
+**安裝測試依賴（僅首次需要）:**
+```bash
+npm install
+```
+
+**執行所有測試:**
+```bash
+npm test
+# 或
+npx playwright test
+```
+
+**以 UI 模式執行測試:**
+```bash
+npx playwright test --ui
+```
+
+### 測試項目
+
+目前包含的測試：
+- ✅ 網站可訪問性測試
+- ✅ 頁面標題驗證
+- ✅ SSL 憑證有效性（嚴格模式）
+
+### 添加新測試
+
+在 `tests/` 目錄下建立新的 `.spec.js` 檔案：
+
+```javascript
+const { test, expect } = require('@playwright/test');
+
+test('新測試項目', async ({ page }) => {
+    await page.goto('https://your-domain.com');
+    // 添加測試邏輯
+});
+```
+
+### 測試配置
+
+測試配置位於 `playwright.config.js`：
+- 預設使用 Chromium 瀏覽器
+- headless 模式執行
+- 嚴格 SSL 檢查（確保使用有效憑證）
+- 30 秒測試超時時間
 
 ## 映像檔重建時機
 
@@ -349,8 +411,44 @@ rm -rf certbot/conf
 1. **憑證申請失敗**: 確認網域 DNS 設定正確，且指向伺服器 IP
 2. **服務無法啟動**: 檢查 `.env` 檔案設定是否正確
 3. **Hugo 建置失敗**: 確認 `hugo/` 目錄下的內容完整
+4. **SSL 憑證路徑錯誤**: 如果 nginx 顯示找不到憑證檔案，檢查 `/etc/letsencrypt/live/` 目錄下的實際路徑（可能為 `domain-0001` 格式）
+5. **測試失敗**: 確認網站使用有效的 SSL 憑證，如果使用 staging 憑證請設定 `STAGING=false` 並重新申請憑證
+
+### SSL 憑證問題排解
+
+**檢查憑證路徑:**
+```bash
+# 查看實際憑證目錄
+docker compose exec nginx ls -la /etc/letsencrypt/live/
+
+# 檢查憑證有效性
+echo | openssl s_client -servername your-domain.com -connect your-domain.com:443 2>/dev/null | openssl x509 -noout -subject -issuer -dates
+```
+
+**修正憑證路徑:**
+如果憑證目錄為 `your-domain.com-0001`，需要更新 `nginx/conf.d/default.conf` 中的路徑設定。
 
 ## 版本歷程
+
+### v1.0.2 (2025-09-04)
+**測試與 SSL 改進版本**
+
+**新增功能**：
+- ✅ **Playwright E2E 測試框架** - 自動化網站功能測試
+- ✅ **SSL 憑證路徑自動修正** - 解決 Let's Encrypt 憑證路徑問題
+- ✅ **改進的 .env 配置說明** - 詳細的 STAGING 參數說明
+- ✅ **測試命令集成** - npm test 一鍵執行測試
+
+**技術改進**：
+- 🔧 修正 nginx SSL 憑證路徑配置
+- 🔧 嚴格的 SSL 憑證驗證（生產環境標準）
+- 🧹 清理臨時檔案與重複資源
+- 📝 完善的 README 文件更新
+
+**測試覆蓋**：
+- 🧪 網站可訪問性測試
+- 🧪 SSL 憑證有效性驗證
+- 🧪 頁面內容驗證
 
 ### v1.0.0 (2025-09-04)
 **完整功能版本**

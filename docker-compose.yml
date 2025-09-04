@@ -7,8 +7,18 @@ services:
       - hugo_public:/target
     environment:
       - HUGO_BASEURL=${HUGO_BASEURL}
-      - HUGO_ENVIRONMENT=production
-    command: ["server", "--bind=0.0.0.0", "--destination=/target", "--minify", "--watch", "--disableFastRender", "--forceSyncStatic", "--baseURL=https://kaido.helenfit.com", "--environment=production"]
+      - HUGO_ENVIRONMENT=${HUGO_ENVIRONMENT}
+    command: >
+      server 
+      --environment=production 
+      --bind=0.0.0.0 
+      --destination=/target 
+      --minify 
+      --watch 
+      --disableFastRender 
+      --forceSyncStatic 
+      --baseURL=https://kaido.helenfit.com
+      --appendPort=false
     networks:
       - kaido-network
     restart: unless-stopped

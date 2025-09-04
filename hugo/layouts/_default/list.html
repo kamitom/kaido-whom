@@ -1,0 +1,26 @@
+{{ define "main" }}
+<h2>{{ .Title }}</h2>
+
+{{ if .Content }}
+<div>{{ .Content }}</div>
+{{ end }}
+
+{{ if .Pages }}
+<ul class="post-list">
+    {{ range .Pages }}
+    <li>
+        <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+        <div class="post-meta">
+            發表於 {{ .Date.Format "2006-01-02" }}
+            {{ if .Params.categories }}
+            | 分類：{{ range .Params.categories }}<span>{{ . }}</span>{{ end }}
+            {{ end }}
+        </div>
+        {{ if .Summary }}
+        <div>{{ .Summary }}</div>
+        {{ end }}
+    </li>
+    {{ end }}
+</ul>
+{{ end }}
+{{ end }}

@@ -2,6 +2,4 @@
 title: "首頁"
 ---
 
-歡迎來到 Kaido 的技術部落格v2！
-
-這裡會分享各種技術文章和日常雜談。
+Am I still a programmer or an architect?

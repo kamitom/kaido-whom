@@ -1,6 +1,6 @@
 baseURL: "https://kaido.helenfit.com"
 languageCode: "zh-tw"
-title: "Kaido-CSW"
+title: "CSW"
 theme: "PaperMod"
 
 enableRobotsTXT: true
@@ -14,10 +14,10 @@ minify:
 
 params:
   env: production
-  title: "Kaido-CSW"
+  title: "CSW"
   description: "技術與雜談分享"
   keywords: [Blog, Portfolio, Tech, 技術, 雜談]
-  author: Kaido
+  author: ["Hugo Authors", "PaperMod Contributors"]
   DateFormat: "2006-01-02"
   defaultTheme: auto
   disableThemeToggle: false
@@ -43,12 +43,12 @@ params:
     # disableFingerprinting: true
 
   label:
-    text: "Kaido-CSW"
+    text: "CSW"
 
   # home-info mode
   homeInfoParams:
-    Title: "歡迎來到 Kaido Content"
-    Content: 這裡分享技術文章與日常雜談
+    Title: "Chen Shihwei"
+    Content: "Mind and Hand"
 
   socialIcons:
     - name: github

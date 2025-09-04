@@ -1,6 +1,6 @@
 baseURL: "https://kaido.helenfit.com"
 languageCode: "zh-tw"
-title: "Kaido Tech Blog"
+title: "Kaido-CSW"
 # theme: "PaperMod"
 
 enableRobotsTXT: true
@@ -14,7 +14,7 @@ minify:
 
 params:
   env: production
-  title: Kaido Tech Blog
+  title: "Kaido-CSW"
   description: "技術與雜談分享"
   keywords: [Blog, Portfolio, Tech, 技術, 雜談]
   author: Kaido
@@ -48,13 +48,13 @@ params:
     safari_pinned_tab: "/safari-pinned-tab.svg"
 
   label:
-    text: "Kaido Tech Blog"
+    text: "Kaido-CSW"
     icon: /apple-touch-icon.png
     iconHeight: 35
 
   # home-info mode
   homeInfoParams:
-    Title: "歡迎來到 Kaido 的技術部落格"
+    Title: "歡迎來到 Kaido Content"
     Content: 這裡分享技術文章與日常雜談
 
   socialIcons:

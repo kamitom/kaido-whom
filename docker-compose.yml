@@ -37,19 +37,22 @@ services:
       - certbot_certs:/etc/letsencrypt
       - certbot_www:/var/www/certbot
       - ./certbot:/scripts
-    command: /bin/sh -c "trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;"
+    entrypoint:
+      - /bin/sh
+      - -c
+    command: "trap 'exit 0' TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;"
     networks:
       - kaido-network
 
 volumes:
   hugo_public:
-    name: kaido-hugo-public-${VERSION:-1.0.0}
+    name: kaido-hugo-public
   certbot_certs:
-    name: kaido-certbot-certs-${VERSION:-1.0.0}
+    name: kaido-certbot-certs
   certbot_www:
-    name: kaido-certbot-www-${VERSION:-1.0.0}
+    name: kaido-certbot-www
 
 networks:
   kaido-network:
-    name: kaido-network-${VERSION:-1.0.0}
+    name: kaido-network
     driver: bridge

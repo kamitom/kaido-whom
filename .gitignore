@@ -11,7 +11,6 @@ exports/
 # Hugo 生成檔案
 hugo/public/
 hugo/resources/
-hugo/themes/
 .hugo_build.lock
 
 # 日誌檔案

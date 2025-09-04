@@ -1,13 +1,13 @@
 services:
   hugo:
-    image: klakegg/hugo:ext-alpine
+    image: hugomods/hugo:exts
     container_name: kaido-hugo-${VERSION:-1.0.0}
     volumes:
       - ./hugo:/src
       - hugo_public:/target
     environment:
       - HUGO_BASEURL=${HUGO_BASEURL}
-    command: ["server", "--bind=0.0.0.0", "--destination=/target", "--minify", "--watch", "--disableFastRender", "--forceSyncStatic"]
+    command: ["server", "--bind=0.0.0.0", "--destination=/target", "--minify", "--watch", "--disableFastRender", "--forceSyncStatic", "--disableLiveReload"]
     networks:
       - kaido-network
     restart: unless-stopped

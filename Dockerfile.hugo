@@ -1,4 +1,4 @@
-FROM klakegg/hugo:ext-alpine AS hugo-builder
+FROM hugomods/hugo:exts AS hugo-builder
 
 ARG VERSION=1.0.0
 LABEL version=$VERSION

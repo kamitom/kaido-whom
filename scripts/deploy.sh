@@ -16,17 +16,17 @@ if [ ! -d "certbot/conf" ]; then
 else
     echo "更新部署..."
     # 停止現有服務
-    docker-compose down
+    docker compose down
     
     # 拉取最新映像檔或建置
     echo "更新服務..."
-    docker-compose up -d
+    docker compose up -d
     
     echo "等待服務啟動..."
     sleep 10
     
     echo "重新載入 nginx 配置..."
-    docker-compose exec nginx nginx -s reload
+    docker compose exec nginx nginx -s reload
 fi
 
 echo "部署完成！"

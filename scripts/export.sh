@@ -30,7 +30,7 @@ cat > ${EXPORT_DIR}/README-DEPLOYMENT.md << EOF
 
 ## 系統需求
 - Docker
-- Docker Compose
+- Docker Compose (v2.0+ 支援 `docker compose` 指令)
 - Ubuntu 22.04 或相容系統
 
 ## 部署步驟

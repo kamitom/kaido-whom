@@ -17,16 +17,16 @@ export: build ## 匯出部署套件
 	@./scripts/export.sh
 
 up: ## 啟動服務
-	@docker-compose up -d
+	@docker compose up -d
 
 down: ## 停止服務
-	@docker-compose down
+	@docker compose down
 
 status: ## 檢查服務狀態
-	@docker-compose ps
+	@docker compose ps
 
 logs: ## 檢視服務日誌
-	@docker-compose logs -f
+	@docker compose logs -f
 
 clean: ## 清理停止的容器和未使用的映像檔
 	@docker system prune -f

@@ -12,6 +12,7 @@ exports/
 hugo/public/
 hugo/resources/
 .hugo_build.lock
+hugo/content/posts/*.md
 
 # 日誌檔案
 *.log

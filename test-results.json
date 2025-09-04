@@ -58,13 +58,13 @@
   },
   "suites": [
     {
-      "title": "hello.spec.js",
-      "file": "hello.spec.js",
+      "title": "url-report.spec.js",
+      "file": "url-report.spec.js",
       "column": 0,
       "line": 0,
       "specs": [
         {
-          "title": "hello world test",
+          "title": "生成詳細的URL檢查報告",
           "ok": true,
           "tags": [],
           "tests": [
@@ -79,12 +79,118 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 215,
+                  "duration": 754,
                   "errors": [],
-                  "stdout": [],
+                  "stdout": [
+                    {
+                      "text": "\n🔍 開始詳細的URL檢查...\n\n"
+                    },
+                    {
+                      "text": "📋 URL檢查報告:\n"
+                    },
+                    {
+                      "text": "==================================================\n"
+                    },
+                    {
+                      "text": "\n📍 Meta 標籤 URL (1 個):\n"
+                    },
+                    {
+                      "text": "  ✅ og:url: https://kaido.helenfit.com/\n"
+                    },
+                    {
+                      "text": "\n🔗 Link 標籤 (10 個):\n"
+                    },
+                    {
+                      "text": "  ✅ canonical: https://kaido.helenfit.com/ \n"
+                    },
+                    {
+                      "text": "  ✅ preload stylesheet: https://kaido.helenfit.com/assets/css/stylesheet.8fe10233a706bc87f2e08b3cf97b8bd4c0a80f10675a143675d59212121037c0.css \n"
+                    },
+                    {
+                      "text": "  ✅ icon: https://kaido.helenfit.com/favicon.ico \n"
+                    },
+                    {
+                      "text": "  ✅ icon: https://kaido.helenfit.com/favicon-16x16.png image/png\n"
+                    },
+                    {
+                      "text": "  ✅ icon: https://kaido.helenfit.com/favicon-32x32.png image/png\n"
+                    },
+                    {
+                      "text": "  ✅ apple-touch-icon: https://kaido.helenfit.com/apple-touch-icon.png \n"
+                    },
+                    {
+                      "text": "  ✅ mask-icon: https://kaido.helenfit.com/safari-pinned-tab.svg \n"
+                    },
+                    {
+                      "text": "  ✅ alternate: https://kaido.helenfit.com/index.xml application/rss+xml\n"
+                    },
+                    {
+                      "text": "  ✅ alternate: https://kaido.helenfit.com/index.json application/json\n"
+                    },
+                    {
+                      "text": "  ✅ alternate: https://kaido.helenfit.com/ \n"
+                    },
+                    {
+                      "text": "\n🌐 錨點連結 (13 個):\n"
+                    },
+                    {
+                      "text": "  ✅ \"Kaido-CSW\" -> https://kaido.helenfit.com/\n"
+                    },
+                    {
+                      "text": "  ✅ \"分類\" -> https://kaido.helenfit.com/categories/\n"
+                    },
+                    {
+                      "text": "  ✅ \"標籤\" -> https://kaido.helenfit.com/tags/\n"
+                    },
+                    {
+                      "text": "  ✅ \"搜尋\" -> https://kaido.helenfit.com/search/\n"
+                    },
+                    {
+                      "text": "  ✅ \"\" -> https://github.com/\n"
+                    },
+                    {
+                      "text": "  ✅ \"\" -> mailto:chenshihwei99@gmail.com\n"
+                    },
+                    {
+                      "text": "  ✅ \"\" -> https://kaido.helenfit.com/posts/test-post/\n"
+                    },
+                    {
+                      "text": "  ✅ \"\" -> https://kaido.helenfit.com/posts/second-post/\n"
+                    },
+                    {
+                      "text": "  ✅ \"\" -> https://kaido.helenfit.com/posts/hello-world/\n"
+                    },
+                    {
+                      "text": "  ✅ \"Kaido-CSW\" -> https://kaido.helenfit.com/\n"
+                    },
+                    {
+                      "text": "  ✅ \"Hugo\" -> https://gohugo.io/\n"
+                    },
+                    {
+                      "text": "  ✅ \"PaperMod\" -> https://github.com/adityatelange/hugo-PaperMod/\n"
+                    },
+                    {
+                      "text": "  ✅ \"\" -> https://kaido.helenfit.com/#top\n"
+                    },
+                    {
+                      "text": "\n📜 腳本連結 (0 個):\n"
+                    },
+                    {
+                      "text": "\n🖼️ 圖片連結 (0 個):\n"
+                    },
+                    {
+                      "text": "\n⚠️  發現的問題:\n"
+                    },
+                    {
+                      "text": "  ✅ 沒有發現問題！\n"
+                    },
+                    {
+                      "text": "\n==================================================\n"
+                    }
+                  ],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2025-09-04T06:58:58.134Z",
+                  "startTime": "2025-09-04T07:22:18.741Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -92,9 +198,117 @@
               "status": "expected"
             }
           ],
-          "id": "e9befff1ff78ab0e24a4-71016e292bbb0b98d658",
-          "file": "hello.spec.js",
+          "id": "02b252f16d9217c0112f-8129d51ad8b202c9b357",
+          "file": "url-report.spec.js",
           "line": 3,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "url-validation.spec.js",
+      "file": "url-validation.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "檢查網站是否有無效的URL",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 645,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "\n=== URL 驗證報告 ===\n"
+                    },
+                    {
+                      "text": "檢查的連結總數: 13\n"
+                    },
+                    {
+                      "text": "失敗的請求: 0\n"
+                    },
+                    {
+                      "text": "發現的無效URL: 0\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-09-04T07:22:19.646Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "965137deed0e49aa7c1a-ac6e66d02c13549e3142",
+          "file": "url-validation.spec.js",
+          "line": 3,
+          "column": 1
+        },
+        {
+          "title": "檢查各個頁面的URL有效性",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2221,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "檢查頁面: /\n"
+                    },
+                    {
+                      "text": "檢查頁面: /categories/\n"
+                    },
+                    {
+                      "text": "檢查頁面: /tags/\n"
+                    },
+                    {
+                      "text": "檢查頁面: /search/\n"
+                    },
+                    {
+                      "text": "\n=== 多頁面URL驗證報告 ===\n"
+                    },
+                    {
+                      "text": "所有頁面都沒有無效URL！\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-09-04T07:22:20.320Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "965137deed0e49aa7c1a-dc36cfbeffecc099f3fa",
+          "file": "url-validation.spec.js",
+          "line": 136,
           "column": 1
         }
       ]
@@ -102,9 +316,9 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-09-04T06:58:57.440Z",
-    "duration": 1092.678,
-    "expected": 1,
+    "startTime": "2025-09-04T07:22:18.022Z",
+    "duration": 4604.966,
+    "expected": 3,
     "skipped": 0,
     "unexpected": 0,
     "flaky": 0

@@ -1,8 +1,10 @@
 {
-  "name": "your-project-name",
+  "name": "kaido-whom-tests",
   "version": "1.0.0",
   "scripts": {
-    "test": "playwright test"
+    "test": "playwright test",
+    "test:urls": "playwright test tests/url-validation.spec.js tests/url-report.spec.js",
+    "check:urls": "./scripts/check-urls.sh"
   },
   "devDependencies": {
     "@playwright/test": "^1.55.0",

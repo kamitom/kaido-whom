@@ -12,6 +12,7 @@ exports/
 hugo/public/
 hugo/resources/
 hugo/themes/
+.hugo_build.lock
 
 # 日誌檔案
 *.log

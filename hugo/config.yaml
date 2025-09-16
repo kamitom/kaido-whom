@@ -48,7 +48,7 @@ params:
   # home-info mode
   homeInfoParams:
     Title: "Chen Shihwei"
-    Content: "Mind and Hand"
+    Content: "👋 歡迎！\n\n* 軟體工程師，熱愛技術分享\n* 同時精通 企業級網路基礎架構規劃 與 軟體開發\n* 分享程式開發心得與技術雜談"
 
   socialIcons:
     - name: github

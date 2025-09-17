@@ -87,6 +87,9 @@ make status
 # 檢視服務日誌
 make logs
 
+# 檢視網站訪問統計
+make stats
+
 # 停止/啟動服務
 make down
 make up
@@ -110,6 +113,9 @@ docker compose ps
 
 # 檢視服務日誌
 docker compose logs -f
+
+# 檢視網站訪問統計
+./scripts/view-stats.sh
 
 # 停止/啟動服務
 docker compose down
@@ -147,7 +153,8 @@ kaido-whom/
 │   ├── deploy.sh        # 部署腳本
 │   ├── export.sh        # 匯出腳本
 │   ├── hugo-watch.sh    # Hugo 監控腳本
-│   └── update-version.sh # 版本更新腳本
+│   ├── update-version.sh # 版本更新腳本
+│   └── view-stats.sh    # 網站訪問統計腳本
 ├── tests/               # Playwright E2E 測試
 │   └── hello.spec.js    # 基本網站測試
 ├── docker-compose.yml   # Docker Compose 配置
@@ -175,6 +182,76 @@ categories: ["分類"]
 ```
 
 建立文章後，**不需要重建映像檔**！Hugo 會自動監控變更並即時更新網站。
+
+## 網站訪問統計
+
+本專案內建了基於 nginx 日誌的訪問統計功能，提供網站流量分析而無需依賴第三方服務。
+
+### 快速查看統計
+
+**使用 Make 指令:**
+```bash
+make stats
+```
+
+**使用腳本:**
+```bash
+./scripts/view-stats.sh
+```
+
+預設顯示訪問統計摘要，包含：
+- 📊 總訪問次數
+- 📅 今日訪問次數
+- 🌐 獨立 IP 數量
+- 📝 文章訪問次數
+- ⏰ 最近24小時訪問趨勢（台灣時間）
+
+### 詳細統計選項
+
+```bash
+./scripts/view-stats.sh -h     # 顯示幫助訊息
+./scripts/view-stats.sh -s     # 統計摘要（預設）
+./scripts/view-stats.sh -t     # 今日訪問統計
+./scripts/view-stats.sh -p     # 文章訪問排行榜
+./scripts/view-stats.sh -i     # IP 訪問統計
+./scripts/view-stats.sh -w     # 即時監控訪問日誌
+./scripts/view-stats.sh -r     # 顯示原始日誌
+```
+
+### 統計功能特色
+
+- ✅ **完全本地化** - 基於 nginx 日誌，無外部依賴
+- ✅ **隱私保護** - 不向第三方傳送任何資料
+- ✅ **即時更新** - 訪問後立即反映在統計中
+- ✅ **台灣時區** - 自動轉換 UTC 時間為台灣時間顯示
+- ✅ **視覺化顯示** - 用星號圖表顯示訪問趨勢
+- ✅ **容器相容** - 自動偵測 Docker 容器狀態
+
+### 範例輸出
+
+```
+=== 訪問統計摘要 ===
+
+總訪問次數: 703
+今日訪問: 263
+獨立 IP: 182
+文章訪問: 33
+
+最近24小時訪問趨勢 (台灣時間):
+17/Sep/2025:14: **************** (16)
+17/Sep/2025:15: *************************** (27)
+17/Sep/2025:16: ********************************************************************* (69)
+```
+
+### 即時監控
+
+使用即時監控功能可以看到訪問者的即時活動：
+
+```bash
+./scripts/view-stats.sh -w
+```
+
+顯示格式：`[時間] IP位址 請求方法URL 狀態碼`
 
 ## 測試
 
@@ -429,6 +506,29 @@ echo | openssl s_client -servername your-domain.com -connect your-domain.com:443
 如果憑證目錄為 `your-domain.com-0001`，需要更新 `nginx/conf.d/default.conf` 中的路徑設定。
 
 ## 版本歷程
+
+### v1.0.3 (2025-09-17)
+**網站統計功能版本**
+
+**新增功能**：
+- ✅ **內建訪問統計系統** - 基於 nginx 日誌的完整流量分析
+- ✅ **台灣時區支援** - 自動轉換 UTC 時間為台灣時間顯示
+- ✅ **多維度統計** - 總訪問、今日訪問、文章排行、IP 統計
+- ✅ **即時監控功能** - 實時查看網站訪問活動
+- ✅ **視覺化趨勢圖** - 24小時訪問趨勢星號圖表
+
+**技術特色**：
+- 🔧 零外部依賴的統計方案
+- 🔧 完全本地化資料處理
+- 🔧 Docker 容器相容設計
+- 🔧 隱私保護 - 不向第三方傳送資料
+- 🧹 優化腳本效能與錯誤處理
+
+**使用方式**：
+- 🚀 `make stats` - 快速查看統計摘要
+- 🚀 `./scripts/view-stats.sh -p` - 文章排行榜
+- 🚀 `./scripts/view-stats.sh -w` - 即時監控
+- 🚀 支援多種分析模式（今日統計、IP 統計等）
 
 ### v1.0.2 (2025-09-04)
 **測試與 SSL 改進版本**

@@ -1,4 +1,4 @@
-.PHONY: build deploy export clean status logs help
+.PHONY: build deploy export clean status logs stats help
 
 # 載入版本號
 VERSION := $(shell cat VERSION)
@@ -27,6 +27,9 @@ status: ## 檢查服務狀態
 
 logs: ## 檢視服務日誌
 	@docker compose logs -f
+
+stats: ## 檢視網站訪問統計
+	@./scripts/view-stats.sh
 
 clean: ## 清理停止的容器和未使用的映像檔
 	@docker system prune -f

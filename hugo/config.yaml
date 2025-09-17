@@ -52,7 +52,7 @@ params:
 
   socialIcons:
     - name: github
-      url: "https://github.com"
+      url: "https://github.com/kamitom"
     - name: email
       url: "mailto:chenshihwei99@gmail.com"
 

@@ -36,6 +36,8 @@ services:
       - certbot_certs:/etc/letsencrypt:ro
       - certbot_www:/var/www/certbot
       - nginx_logs:/var/log/nginx
+    environment:
+      - TZ=Asia/Taipei
     depends_on:
       - hugo
     restart: unless-stopped

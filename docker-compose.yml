@@ -35,11 +35,19 @@ services:
       - ./nginx/conf.d:/etc/nginx/conf.d:ro
       - certbot_certs:/etc/letsencrypt:ro
       - certbot_www:/var/www/certbot
+      - nginx_logs:/var/log/nginx
     depends_on:
       - hugo
     restart: unless-stopped
     networks:
       - kaido-network
+    command: >
+      sh -c "if [ -L /var/log/nginx/access.log ]; then
+               rm -f /var/log/nginx/access.log /var/log/nginx/error.log;
+               touch /var/log/nginx/access.log /var/log/nginx/error.log;
+             fi &&
+             chown nginx:nginx /var/log/nginx/*.log 2>/dev/null || true &&
+             nginx -g 'daemon off;'"
 
   certbot:
     image: certbot/certbot
@@ -62,6 +70,8 @@ volumes:
     name: kaido-certbot-certs
   certbot_www:
     name: kaido-certbot-www
+  nginx_logs:
+    name: kaido-nginx-logs
 
 networks:
   kaido-network:

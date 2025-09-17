@@ -47,12 +47,18 @@ show_help() {
 }
 
 get_access_log() {
-    # nginx 在 Docker 中通常將日誌重定向到 stdout
-    # 所以我們從 Docker 日誌中提取 access log
-    docker logs "$NGINX_CONTAINER" 2>/dev/null | grep -E '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' || {
-        echo -e "${YELLOW}目前沒有訪問日誌或容器剛啟動${NC}" >&2
-        return 1
-    }
+    # 優先使用持久化的日誌檔案，如果不存在則使用 Docker 日誌
+    if docker exec "$NGINX_CONTAINER" test -f /var/log/nginx/access.log && \
+       docker exec "$NGINX_CONTAINER" test -s /var/log/nginx/access.log; then
+        # 使用持久化的日誌檔案
+        docker exec "$NGINX_CONTAINER" cat /var/log/nginx/access.log 2>/dev/null
+    else
+        # 回退到 Docker 日誌
+        docker logs "$NGINX_CONTAINER" 2>/dev/null | grep -E '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' || {
+            echo -e "${YELLOW}目前沒有訪問日誌或容器剛啟動${NC}" >&2
+            return 1
+        }
+    fi
 }
 
 get_today_log() {
@@ -164,30 +170,58 @@ watch_logs() {
     echo -e "${YELLOW}按 Ctrl+C 停止監控${NC}"
     echo ""
 
-    docker logs -f "$NGINX_CONTAINER" 2>/dev/null | grep -E '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' --line-buffered | \
-    while IFS= read -r line; do
-        # 解析日誌行
-        local ip=$(echo "$line" | awk '{print $1}')
-        local timestamp=$(echo "$line" | awk '{print $4 $5}' | tr -d '[]')
-        local method_url=$(echo "$line" | awk '{print $6 $7}' | tr -d '"')
-        local status=$(echo "$line" | awk '{print $9}')
+    # 優先使用持久化日誌檔案的 tail，否則使用 Docker 日誌
+    if docker exec "$NGINX_CONTAINER" test -f /var/log/nginx/access.log; then
+        docker exec "$NGINX_CONTAINER" tail -f /var/log/nginx/access.log | \
+        while IFS= read -r line; do
+            # 解析日誌行
+            local ip=$(echo "$line" | awk '{print $1}')
+            local timestamp=$(echo "$line" | awk '{print $4 $5}' | tr -d '[]')
+            local method_url=$(echo "$line" | awk '{print $6 $7}' | tr -d '"')
+            local status=$(echo "$line" | awk '{print $9}')
 
-        # 根據狀態碼著色
-        case "$status" in
-            "200"|"304") color=$GREEN ;;
-            "404") color=$YELLOW ;;
-            "5"*) color=$RED ;;
-            *) color=$NC ;;
-        esac
+            # 根據狀態碼著色
+            case "$status" in
+                "200"|"304") color=$GREEN ;;
+                "404") color=$YELLOW ;;
+                "5"*) color=$RED ;;
+                *) color=$NC ;;
+            esac
 
-        echo -e "${color}${timestamp}${NC} ${ip} ${method_url} ${color}${status}${NC}"
-    done
+            echo -e "${color}${timestamp}${NC} ${ip} ${method_url} ${color}${status}${NC}"
+        done
+    else
+        # 回退到 Docker 日誌
+        docker logs -f "$NGINX_CONTAINER" 2>/dev/null | grep -E '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' --line-buffered | \
+        while IFS= read -r line; do
+            # 解析日誌行（同上）
+            local ip=$(echo "$line" | awk '{print $1}')
+            local timestamp=$(echo "$line" | awk '{print $4 $5}' | tr -d '[]')
+            local method_url=$(echo "$line" | awk '{print $6 $7}' | tr -d '"')
+            local status=$(echo "$line" | awk '{print $9}')
+
+            case "$status" in
+                "200"|"304") color=$GREEN ;;
+                "404") color=$YELLOW ;;
+                "5"*) color=$RED ;;
+                *) color=$NC ;;
+            esac
+
+            echo -e "${color}${timestamp}${NC} ${ip} ${method_url} ${color}${status}${NC}"
+        done
+    fi
 }
 
 show_raw_logs() {
     echo -e "${BLUE}=== 原始 Nginx 日誌 (最後50行) ===${NC}"
     echo ""
-    docker logs "$NGINX_CONTAINER" 2>/dev/null | grep -E '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | tail -50
+
+    # 優先使用持久化日誌檔案，否則使用 Docker 日誌
+    if docker exec "$NGINX_CONTAINER" test -f /var/log/nginx/access.log; then
+        docker exec "$NGINX_CONTAINER" tail -50 /var/log/nginx/access.log
+    else
+        docker logs "$NGINX_CONTAINER" 2>/dev/null | grep -E '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | tail -50
+    fi
 }
 
 # 主程式

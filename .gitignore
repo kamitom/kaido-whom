@@ -32,4 +32,6 @@ Thumbs.db
 *.swo
 *~
 
-node_modules/
+node_modules/hugo/content/posts/hello-world.md
+
+node_modules/ 
